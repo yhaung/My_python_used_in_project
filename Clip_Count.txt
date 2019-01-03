@@ -1,0 +1,38 @@
+# Counting features in layers in TOC
+mxd = arcpy.mapping.MapDocument('current')
+total_count = 0
+for df in arcpy.mapping.ListDataFrames(mxd):
+    for lyr in arcpy.mapping.ListLayers(df):
+        if lyr.supports("dataSource"):
+            result = arcpy.GetCount_management(lyr.dataSource)
+            desc = arcpy.Describe(lyr.dataSource)
+            geometryType = desc.shapeType
+            print(lyr, ": ", geometryType ,": ", result.getOutput(0))  
+
+# Cliping layers in TOC
+import arcpy
+mxd = arcpy.mapping.MapDocument('current')
+outspace = "D:/OSM_Comparison/OSM Yangon/OSM_2017/Metadata_Geofabrick/20171213_Myanmar/Yangon/"
+xy_tolerance = ""
+clip_features = "D:/OSM_Comparison/Ygn_OSM_Comparison(17&18)/Summarize dbf/Yangon_polygon.shp"
+
+for df in arcpy.mapping.ListDataFrames(mxd):
+	for lyr in arcpy.mapping.ListLayers(df):
+		if lyr.supports("dataSource"):
+			in_features = lyr.dataSource
+			out_features = outspace + lyr.name + ".shp"
+			arcpy.Clip_analysis(in_features, clip_features, out_features, xy_tolerance)
+
+
+#printing source file names
+import arcpy
+mxd = arcpy.mapping.MapDocument('current')
+outspace = "D:/OSM_Comparison/OSM Yangon/OSM_2017/Metadata_Geofabrick/20171213_Myanmar/Yangon/"
+xy_tolerance = ""
+clip_features = "D:/OSM_Comparison/Ygn_OSM_Comparison(17&18)/Summarize dbf/Yangon_polygon.shp"
+
+for df in arcpy.mapping.ListDataFrames(mxd):
+	for lyr in arcpy.mapping.ListLayers(df):
+		if lyr.supports("dataSource"):
+			in_features = lyr.dataSource
+			print(in_features)

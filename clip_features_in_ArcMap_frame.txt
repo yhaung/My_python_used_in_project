@@ -1,0 +1,13 @@
+# Cliping layers in TOC
+import arcpy
+mxd = arcpy.mapping.MapDocument('current')
+outspace = "C:/Users/Ye/Desktop/OSM/Ygn_OSM/"
+xy_tolerance = ""
+clip_features = "C:/Users/Ye/Desktop/OSM/Ygn_polygon.shp"
+
+for df in arcpy.mapping.ListDataFrames(mxd):
+	for lyr in arcpy.mapping.ListLayers(df):
+		if lyr.supports("dataSource"):
+			in_features = lyr.dataSource
+			out_features = outspace + lyr.name + ".shp"
+			arcpy.Clip_analysis(in_features, clip_features, out_features, xy_tolerance)
